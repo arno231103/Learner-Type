@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bạn học theo cách nào?</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&display=swap">
+<style>
+:root{--bg:#eef2f6;--surface:#fff;--ink:#14213d;--muted:#5b6b82;--line:#d5dde8;--accent:#14213d;--on-accent:#fff;
+--V:#2f7de1;--A:#e0762a;--C:#7a4fd6;--K:#1f9d6b;--R:#c9456b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--surface:#182236;--ink:#eaf0fa;--muted:#9fb0c8;--line:#2b3a55;--accent:#eaf0fa;--on-accent:#0f1624;--V:#5b9bf0;--A:#f09550;--C:#9a79ee;--K:#3dbd8a;--R:#e8698c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1624;--surface:#182236;--ink:#eaf0fa;--muted:#9fb0c8;--line:#2b3a55;--accent:#eaf0fa;--on-accent:#0f1624;--V:#5b9bf0;--A:#f09550;--C:#9a79ee;--K:#3dbd8a;--R:#e8698c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+main{max-width:640px;margin:0 auto;padding:28px 18px 56px}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.15;margin:0 0 12px;font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(20px,4.5vw,26px);line-height:1.3;margin:0 0 20px;font-weight:700}
+p{margin:0 0 14px}
+.muted{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 28px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:14px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;padding:14px 26px;border-radius:12px;background:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button:focus-visible{outline:3px solid var(--V);outline-offset:2px}
+.progress{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin-bottom:8px}
+.progress>i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.count{font-size:14px;color:var(--muted);margin-bottom:22px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:14px;align-items:flex-start;text-align:left;width:100%;font:inherit;color:inherit;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;transition:border-color .15s,transform .15s}
+.opt:hover{border-color:var(--accent)}
+.opt:active{transform:scale(.99)}
+.opt.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt b{flex:0 0 26px;height:26px;border-radius:8px;background:var(--bg);display:grid;place-items:center;font-size:14px}
+.nav{display:flex;justify-content:space-between;margin-top:22px}
+.hero{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:22px;border-left:8px solid var(--c)}
+.hero h2{margin-bottom:6px;font-size:clamp(24px,6vw,32px)}
+.hero .pct{font-weight:800;font-size:15px;color:var(--c);margin-bottom:12px}
+.bars{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px 20px 6px;margin-bottom:22px}
+.row{margin-bottom:16px}
+.row .top{display:flex;justify-content:space-between;font-size:15px;font-weight:500;margin-bottom:6px}
+.track{height:12px;border-radius:12px;background:var(--bg);overflow:hidden}
+.track i{display:block;height:100%;width:0;border-radius:12px;background:var(--c);transition:width .8s cubic-bezier(.2,.7,.2,1)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:700;display:flex;align-items:center;gap:10px}
+details p{margin:10px 0 0;font-size:15px}
+.tips{margin:8px 0 0;padding-left:20px;font-size:15px}
+.hidden{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<section id="intro">
+  <h1>Bạn học hiệu quả nhất theo cách nào?</h1>
+  <p class="muted">Trả lời 10 câu hỏi ngắn, chọn đáp án đúng nhất với bạn. Không có đáp án đúng hay sai. Kết quả cho biết tỷ lệ phần trăm của năm kiểu người học.</p>
+  <div class="chips" id="chips"></div>
+  <button class="btn" id="start">Bắt đầu làm bài</button>
+</section>
+
+<section id="quiz" class="hidden">
+  <div class="progress"><i id="bar"></i></div>
+  <div class="count" id="count"></div>
+  <h2 id="q"></h2>
+  <div class="opts" id="opts"></div>
+  <div class="nav"><button class="btn ghost" id="back">Câu trước</button><span></span></div>
+</section>
+
+<section id="result" class="hidden" aria-live="polite">
+  <h1>Kết quả của bạn</h1>
+  <div id="hero"></div>
+  <div class="bars" id="bars"></div>
+  <h2>Năm kiểu người học</h2>
+  <div id="all"></div>
+  <p class="muted" style="margin-top:18px">Hầu hết mọi người là sự kết hợp của nhiều kiểu. Hãy dùng kiểu cao nhất làm điểm xuất phát, rồi thử thêm kiểu thứ hai.</p>
+  <button class="btn" id="retry">Làm lại bài</button>
+</section>
+</main>
+
+<script>
+var TYPES = {
+  A:{key:"V",name:"Visual",vi:"Học bằng hình ảnh",desc:"Bạn hiểu nhanh khi nhìn thấy hình ảnh, sơ đồ, biểu đồ và màu sắc. Khi thông tin được vẽ ra, bạn thấy rõ các phần và mối liên hệ giữa chúng.",tips:["Vẽ mind map, sơ đồ hoặc bảng so sánh","Dùng màu sắc để phân nhóm ý","Xem video, infographic trước khi đọc chi tiết"]},
+  B:{key:"A",name:"Auditory / Social",vi:"Học bằng nghe và trao đổi",desc:"Bạn học tốt nhất khi nghe giải thích và nói chuyện với người khác. Kể lại hoặc tranh luận giúp bạn hiểu và nhớ lâu hơn.",tips:["Học nhóm hoặc nhờ người khác giải thích","Tự giảng lại bài cho bạn bè nghe","Nghe podcast, bài giảng, ghi âm rồi nghe lại"]},
+  C:{key:"C",name:"Conceptual",vi:"Học bằng nguyên lý và bản chất",desc:"Bạn cần hiểu vì sao điều đó đúng trước khi ghi nhớ. Khi nắm được logic và nguyên lý nền tảng, bạn tự suy ra được nhiều thứ khác.",tips:["Luôn hỏi \u201Ctại sao\u201D và \u201Cđiều gì xảy ra nếu\u201D","Tìm khái niệm cốt lõi trước, chi tiết sau","Áp dụng một nguyên lý vào bài toán mới"]},
+  D:{key:"K",name:"Kinesthetic",vi:"Học bằng thực hành",desc:"Bạn học qua hành động: tự làm, thử nghiệm và rút kinh nghiệm. Trải nghiệm thực tế giúp kiến thức gắn chắc vào trí nhớ của bạn.",tips:["Làm bài tập hoặc dự án thực tế ngay từ đầu","Thử, sai, sửa thay vì chỉ đọc lý thuyết","Chia nhỏ bài học thành các việc cụ thể để làm"]},
+  E:{key:"R",name:"Reading / Writing",vi:"Học bằng đọc và viết",desc:"Bạn thích chữ viết có cấu trúc. Đọc tài liệu rồi viết lại bằng lời của mình giúp bạn hiểu sâu và hệ thống hóa kiến thức.",tips:["Ghi chú, viết dàn ý và bản tóm tắt","Đọc tài liệu rồi viết lại theo cách hiểu riêng","Tạo danh sách, flashcard và bảng thuật ngữ"]}
+};
+var ORDER = ["A","B","C","D","E"];
+var QS = [
+["Khi học một chủ đề hoàn toàn mới, điều gì giúp bạn hiểu nhanh nhất?","Nhìn hình ảnh, sơ đồ hoặc biểu đồ minh họa.","Nghe người khác giải thích hoặc thảo luận.","Hiểu nguyên lý, bản chất và logic đằng sau nó.","Tự tay thực hiện hoặc thử nghiệm.","Đọc tài liệu và tự tổng hợp thành ghi chú."],
+["Khi gặp một vấn đề phức tạp, bạn thường làm gì đầu tiên?","Vẽ sơ đồ để hình dung các thành phần và mối liên hệ.","Trao đổi với người khác để nghe cách họ giải thích.","Chia vấn đề thành các nguyên lý và phân tích từng phần.","Thử một vài cách giải quyết để xem kết quả.","Đọc kỹ thông tin, tìm dữ kiện rồi suy nghĩ độc lập."],
+["Điều gì khiến bạn nhớ một kiến thức lâu hơn?","Hình ảnh, màu sắc, biểu đồ và bố cục.","Một lời giải thích hoặc cuộc trò chuyện đáng nhớ.","Hiểu được tại sao kiến thức đó đúng và liên kết với điều khác.","Trải nghiệm thực tế và tự mình thực hiện.","Viết lại, đọc lại và hệ thống hóa kiến thức."],
+["Nếu phải học cách sử dụng một thiết bị mới, bạn sẽ chọn cách nào?","Xem hình ảnh hoặc video hướng dẫn.","Nhờ một người hướng dẫn trực tiếp.","Tìm hiểu cấu tạo và nguyên lý hoạt động trước.","Cầm thiết bị lên và tự thao tác.","Đọc manual hoặc tài liệu hướng dẫn."],
+["Khi người khác giải thích một vấn đề nhưng bạn chưa hiểu, bạn muốn họ làm gì?","Vẽ hình hoặc đưa ra ví dụ trực quan.","Giải thích lại bằng lời theo cách khác.","Giải thích nguyên nhân và logic của từng bước.","Cho tôi thử làm một ví dụ thực tế.","Cung cấp tài liệu để tôi tự đọc và suy ngẫm."],
+["Khi tiếp cận một lượng lớn thông tin, bạn thường tổ chức chúng như thế nào?","Mind map, sơ đồ hoặc bảng biểu trực quan.","Thảo luận và kể lại nội dung theo cách của mình.","Phân loại theo hệ thống, nguyên tắc và mối quan hệ.","Chia thành các nhiệm vụ hoặc bài tập thực hành.","Viết thành ghi chú, dàn ý hoặc tài liệu có cấu trúc."],
+["Bạn cảm thấy tự tin nhất khi nào?","Khi có thể nhìn vào một sơ đồ và hiểu toàn bộ vấn đề.","Khi có thể giải thích vấn đề cho người khác nghe.","Khi có thể giải thích tại sao và dự đoán điều gì sẽ xảy ra.","Khi có thể tự thực hiện công việc mà không cần hướng dẫn.","Khi có thể viết lại kiến thức một cách rõ ràng."],
+["Nếu chỉ có 30 phút để học một chủ đề mới, bạn sẽ ưu tiên?","Xem video hoặc infographic tổng quan.","Nghe một người có kinh nghiệm giải thích.","Tìm hiểu những khái niệm cốt lõi và nguyên lý nền tảng.","Làm thử một bài tập hoặc tình huống thực tế.","Đọc một tài liệu tóm tắt và ghi chú."],
+["Khi học một kiến thức mới nhưng chưa hiểu rõ, điều gì thường khiến bạn bị mắc kẹt?","Không có hình ảnh hoặc ví dụ trực quan để hình dung.","Không có ai giải thích hoặc trao đổi cùng.","Không hiểu bản chất hoặc các giả định nền tảng.","Không có cơ hội thực hành để kiểm chứng.","Thông tin thiếu cấu trúc hoặc tài liệu không rõ ràng."],
+["Sau khi hoàn thành một khóa học, điều gì chứng minh bạn đã thực sự tiếp thu?","Tôi có thể vẽ lại sơ đồ tổng thể của kiến thức.","Tôi có thể trình bày và giải thích cho người khác.","Tôi có thể áp dụng nguyên lý vào một vấn đề mới.","Tôi có thể thực hiện thành thạo công việc liên quan.","Tôi có thể viết một bản tổng hợp đầy đủ và có hệ thống."]
+];
+var $ = function(id){return document.getElementById(id)};
+var cur = 0, ans = [];
+
+function show(id){["intro","quiz","result"].forEach(function(s){$(s).classList.toggle("hidden",s!==id)});window.scrollTo(0,0)}
+
+$("chips").innerHTML = ORDER.map(function(k){var t=TYPES[k];return '<span class="chip"><i class="dot" style="background:var(--'+t.key+')"></i>'+t.name+'</span>'}).join("");
+
+function render(){
+  var q = QS[cur];
+  $("count").textContent = "Câu " + (cur+1) + " / " + QS.length;
+  $("bar").style.width = (cur/QS.length*100) + "%";
+  $("q").textContent = q[0];
+  $("back").style.visibility = cur===0 ? "hidden" : "visible";
+  $("opts").innerHTML = "";
+  ORDER.forEach(function(k,i){
+    var b = document.createElement("button");
+    b.className = "opt" + (ans[cur]===k ? " sel" : "");
+    b.innerHTML = "<b>"+k+"</b><span></span>";
+    b.lastChild.textContent = q[i+1];
+    b.onclick = function(){ans[cur]=k;b.classList.add("sel");setTimeout(next,180)};
+    $("opts").appendChild(b);
+  });
+}
+function next(){ if(cur<QS.length-1){cur++;render()} else finish() }
+
+function finish(){
+  var score = {A:0,B:0,C:0,D:0,E:0};
+  ans.forEach(function(k){score[k]++});
+  var res = ORDER.map(function(k){return {k:k,n:score[k],p:Math.round(score[k]/QS.length*100)}});
+  var sorted = res.slice().sort(function(a,b){return b.n-a.n});
+  var top = sorted.filter(function(r){return r.n===sorted[0].n});
+
+  $("hero").innerHTML = top.map(function(r){
+    var t = TYPES[r.k];
+    return '<div class="hero" style="--c:var(--'+t.key+')"><div class="pct">'+(top.length>1?"Kiểu nổi bật · ":"Kiểu nổi bật của bạn · ")+r.p+'%</div><h2>'+t.name+' – '+t.vi+'</h2><p>'+t.desc+'</p><strong>Gợi ý học:</strong><ul class="tips">'+t.tips.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ul></div>';
+  }).join("");
+
+  $("bars").innerHTML = sorted.map(function(r){
+    var t = TYPES[r.k];
+    return '<div class="row" style="--c:var(--'+t.key+')"><div class="top"><span>'+t.name+'</span><span>'+r.p+'%</span></div><div class="track"><i data-w="'+r.p+'"></i></div></div>';
+  }).join("");
+
+  $("all").innerHTML = ORDER.map(function(k){
+    var t = TYPES[k];
+    return '<details><summary><i class="dot" style="background:var(--'+t.key+')"></i>'+t.name+' – '+t.vi+'</summary><p>'+t.desc+'</p></details>';
+  }).join("");
+
+  $("bar").style.width = "100%";
+  show("result");
+  setTimeout(function(){
+    document.querySelectorAll(".track i").forEach(function(el){el.style.width=el.dataset.w+"%"});
+  },60);
+}
+
+$("start").onclick = function(){cur=0;ans=[];show("quiz");render()};
+$("back").onclick = function(){if(cur>0){cur--;render()}};
+$("retry").onclick = function(){cur=0;ans=[];show("intro")};
+</script>
+</body>
+</html>
